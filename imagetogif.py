@@ -1,5 +1,6 @@
 from PIL import Image, ImageTk
 from tkinter import Tk, Button, filedialog, Label
+import os
 
 def upload_image():
     # Open a file dialog to select an image file
@@ -42,25 +43,8 @@ def upload_image():
             # Save the new GIF image with higher quality to the selected path
             frames[0].save(output_path, save_all=True, append_images=frames[1:], loop=0, duration=500, optimize=False, quality=100)
 
-            # Resize the output image for visualization in the GUI
-            resized_output = Image.open(output_path).resize((300, 300))
-
-            # Show the resized uploaded image
-            uploaded_image = ImageTk.PhotoImage(resized_original)
-            uploaded_label.configure(image=uploaded_image)
-            uploaded_label.image = uploaded_image
-
-            # Show the resized output image
-            output_image = ImageTk.PhotoImage(resized_output)
-            output_label.configure(image=output_image)
-            output_label.image = output_image
-
-            # Enable the button to open the output image file
-            open_button.configure(state="normal", command=lambda: open_output(output_path))
-
 def open_output(file_path):
     # Open the output image file
-    import os
     os.system(f'start {file_path}')
 
 # Create the GUI interface
@@ -70,19 +54,11 @@ root.geometry("700x400")
 
 # Create a label to display the resized uploaded image
 uploaded_label = Label(root)
-uploaded_label.pack(side="left")
+uploaded_label.pack()
 
-# Create a label to display the resized output image
-output_label = Label(root)
-output_label.pack(side="right")
-
-# Create an "Upload Image" button
-upload_button = Button(root, text="Upload Image", command=upload_image)
+# Create an "Upload Image" button with better styling
+upload_button = Button(root, text="Upload Image", command=upload_image, bg="blue", fg="white", relief="solid", borderwidth=2, padx=10, pady=5, font=("Arial", 12), cursor="hand2")
 upload_button.pack()
-
-# Create a button to open the output image file
-open_button = Button(root, text="Open Output", state="disabled")
-open_button.pack()
 
 # Start the GUI event loop
 root.mainloop()
