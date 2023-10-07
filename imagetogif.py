@@ -35,25 +35,28 @@ def upload_image():
 
             frames.append(frame)
 
-        # Save the new GIF image with higher quality
-        output_path = 'output.gif'
-        frames[0].save(output_path, save_all=True, append_images=frames[1:], loop=0, duration=500, optimize=False, quality=100)
+        # Ask the user to choose where to save the output GIF
+        output_path = filedialog.asksaveasfilename(defaultextension=".gif", filetypes=[("GIF Files", "*.gif")])
 
-        # Resize the output image for visualization in the GUI
-        resized_output = Image.open(output_path).resize((300, 300))
+        if output_path:
+            # Save the new GIF image with higher quality to the selected path
+            frames[0].save(output_path, save_all=True, append_images=frames[1:], loop=0, duration=500, optimize=False, quality=100)
 
-        # Show the resized uploaded image
-        uploaded_image = ImageTk.PhotoImage(resized_original)
-        uploaded_label.configure(image=uploaded_image)
-        uploaded_label.image = uploaded_image
+            # Resize the output image for visualization in the GUI
+            resized_output = Image.open(output_path).resize((300, 300))
 
-        # Show the resized output image
-        output_image = ImageTk.PhotoImage(resized_output)
-        output_label.configure(image=output_image)
-        output_label.image = output_image
+            # Show the resized uploaded image
+            uploaded_image = ImageTk.PhotoImage(resized_original)
+            uploaded_label.configure(image=uploaded_image)
+            uploaded_label.image = uploaded_image
 
-        # Enable the button to open the output image file
-        open_button.configure(state="normal", command=lambda: open_output(output_path))
+            # Show the resized output image
+            output_image = ImageTk.PhotoImage(resized_output)
+            output_label.configure(image=output_image)
+            output_label.image = output_image
+
+            # Enable the button to open the output image file
+            open_button.configure(state="normal", command=lambda: open_output(output_path))
 
 def open_output(file_path):
     # Open the output image file
