@@ -12,9 +12,6 @@ def upload_image():
         # Load the original image
         original = Image.open(file_path)
 
-        # Resize the original image for visualization in the GUI
-        resized_original = original.resize((300, 300))
-
         # Create a new GIF image with the same dimensions as the original image
         gif = Image.new('RGBA', original.size)
 
@@ -43,6 +40,9 @@ def upload_image():
             # Save the new GIF image with higher quality to the selected path
             frames[0].save(output_path, save_all=True, append_images=frames[1:], loop=0, duration=500, optimize=False, quality=100)
 
+            # Show a completion message
+            completion_label.config(text="Conversion complete!")
+
 def open_output(file_path):
     # Open the output image file
     os.system(f'start {file_path}')
@@ -50,15 +50,15 @@ def open_output(file_path):
 # Create the GUI interface
 root = Tk()
 root.title("Image Uploader")
-root.geometry("700x400")
-
-# Create a label to display the resized uploaded image
-uploaded_label = Label(root)
-uploaded_label.pack()
+root.geometry("300x200")  # Smaller window size
 
 # Create an "Upload Image" button with better styling
-upload_button = Button(root, text="Upload Image", command=upload_image, bg="blue", fg="white", relief="solid", borderwidth=2, padx=10, pady=5, font=("Arial", 12), cursor="hand2")
-upload_button.pack()
+upload_button = Button(root, text="Upload Image", command=upload_image, bg="lightblue", relief="solid", borderwidth=2, padx=10, pady=5, font=("Arial", 12), cursor="hand2")
+upload_button.pack(pady=20)
+
+# Create a label for the completion message
+completion_label = Label(root, text="", fg="green")
+completion_label.pack()
 
 # Start the GUI event loop
 root.mainloop()
